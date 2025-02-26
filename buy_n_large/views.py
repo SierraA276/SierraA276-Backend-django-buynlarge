@@ -55,6 +55,31 @@ def user_detail(request, user_id):
     return JsonResponse(data)
 
 @csrf_exempt
+def user_update(request, user_id):
+
+    if request.method == "PUT":
+        try:
+            usuario = get_object_or_404(Usuario, pk=user_id)
+            data = json.loads(request.body)
+            # Actualizar solo los campos proporcionados en la solicitud
+            usuario.nombre =data.get('nombre', usuario.nombre)
+            usuario.email = data.get('email', usuario.email)
+            usuario.password = data.get('password', usuario.password)
+            usuario.is_admin = data.get('is_admin', usuario.is_admin)
+            
+            usuario.save()
+
+            return JsonResponse({
+                'id': usuario.id, 'nombre': usuario.nombre,'email': usuario.email, 'is_admin': usuario.is_admin
+            }, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid method'}, status=405)
+
+
+@csrf_exempt
 def computer_create(request):
     if request.method =='POST':
         try:

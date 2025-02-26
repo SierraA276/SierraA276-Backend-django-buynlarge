@@ -21,6 +21,7 @@ from buy_n_large import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/create/', views.user_create, name='user_create'),
+    path('users/update/<int:user_id>/', views.user_update, name='user_update'),
     path('users/<int:user_id>/', views.user_detail, name='user_detail'),
     path('computers/', views.computer_list, name='computer_list'),
     path('computers/create/', views.computer_create, name='computer_create'),
